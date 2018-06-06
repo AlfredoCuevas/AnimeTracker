@@ -1,0 +1,172 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+
+        <script src="{{=URL('static', 'js/vue.js')}}"></script>
+        <link href="{{=URL('static','css/Alfredo_custom.css')}}" rel="stylesheet" type="text/css"/>
+        <script>
+            // Define URLS
+            var get_watch_list_url = "{{=URL('api','get_watch_list')}}";
+            var test_url = "{{=URL('api','testing')}}";
+            var test_post_entry_url = "{{=URL('api','test_post_entry')}}";
+            var search_for_anime_url = "{{=URL('api', 'search_for_anime')}}";
+            var add_selected_to_planToWatch_url = "{{=URL('api', 'add_selected_to_planToWatch')}}";
+            var add_favorites_url = "{{=URL('api', 'add_favorites')}}";
+            var remove_favorites_url = "{{=URL('api', 'remove_favorites')}}";
+            var get_favorites_list_url = "{{=URL('api', 'get_favorites_list')}}";
+            var user_logged_in = false;
+        </script>
+{{end}}
+
+<div class="main_content">
+
+  <!-- Here goes your main HTML code. -->
+
+  <div id="vue-div" class="display:none">
+
+      {{if auth.user is not None:}}
+          <script>user_logged_in = true;</script>
+
+          <!-- Defines the sidebar that allows the user to navigate the space -->
+          <div class="sidebar" id="my_side_menu">
+              <button class="rounded center" id="user_icon">
+                  <i class="fa fa-user fa-5x"></i>
+              </button>
+
+              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('home')">
+                  <i class="fa fa-home fa-2x"></i>
+              </button>
+              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('favorites')">
+                  <i class="fa fa-heart fa-2x"></i>
+              </button>
+              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('add')">
+                  <i class="fa fa-plus fa-2x"></i>
+              </button>
+              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('search')">
+                  <i class="fa fa-search fa-2x"></i>
+              </button>
+              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('random')">
+                  <i class="fa fa-question-circle fa-2x"></i>
+              </button>
+              <button class="rounded center" id="sign_out">
+                  <i class="fa fa-sign-out fa-2x"></i>
+              </button>
+          </div>
+
+          <!-- Creates the Tabs for different lists when on the home screen -->
+          <div class="tabs" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
+              <button class="tab_link" id="initial" v-on:click="tab_clicked('watching', $event)">Watching</button>
+              <button class="tab_link" v-on:click="tab_clicked('planToWatch', $event)">Plan To Watch</button>
+              <button class="tab_link" v-on:click="tab_clicked('onHold', $event)">On Hold</button>
+              <button class="tab_link" v-on:click="tab_clicked('completed', $event)">Completed</button>
+              <button class="tab_link" v-on:click="tab_clicked('dropped', $event)">Dropped</button>
+
+          </div>
+
+          <!-- Defines the container used when displaying lists of shows -->
+          <div class="shows_container" style="background-color: yellow;" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
+              <ul class="container" v-if="current_page === 'planToWatch'">
+                  <li v-for="(show, index) in planToWatch" class="half lifted show_box">
+                      <img v-bind:src="show.image_url" class="anime_image">
+                      <div class="anime_info_box blue">
+                          <h5 style="text-align: center;">${show.title}</h5>
+                          <button v-if="show.favorite == false" class="favorites_card_button"
+                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: lightgrey; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button v-if="show.favorite == true" class="favorites_card_button" 
+                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: red; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
+                          <div class="progress_bar_container">
+                            <div class="progress_bar_fill"></div>
+                          </div>
+                          
+                      </div>
+                  </li>
+              </ul>
+
+              <ul class="container" v-if="current_page === 'watching'">
+                  <li v-for="(show, index) in watching" class="half lifted show_box">
+                      <img v-bind:src="show.image_url" class="anime_image">
+                      <div class="anime_info_box blue">
+                          <h5 style="text-align: center;">${show.title}</h5>
+                          <button v-if="show.favorite == false" class="favorites_card_button" v-on:click="" style="color: lightgrey; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button v-if="show.favorite == true" class="favorites_card_button" v-on:click="" style="color: red; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
+                          <div class="progress_bar_container">
+                            <div class="progress_bar_fill"></div>
+                          </div>
+                          
+                      </div>
+                  </li>
+              </ul>
+          </div>
+
+          <!-- Search Page: Search for an Anime to Add to Your list -->
+          <div class="search_page" v-if="current_page === 'search'">
+            <div class="search_bar_container">
+              <input type="text" placeholder="Search.." name="search" v-model="input_search">
+              <button type="submit" v-on:click="search_for_anime()"><i class="fa fa-search"></i></button>
+            </div>
+
+            <div class="search_result_container">
+              <ul>
+                <li v-for="(searched_show, index) in searched_anime">
+                  <img v-bind:src = "searched_show.image_url">
+                  <div style="color: black">
+                      <p>Title: ${searched_show.title}</p>
+                      <p>Type: ${searched_show.type}</p>
+                      <p>Community Rating: ${searched_show.score}</p>
+                      <p>Number of Episodes: ${searched_show.episodes}</p>
+                  </div>
+                  <button v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            
+          </div>
+
+          <!-- Favorites Page: Displays all the anime that the user has labeled as favorite-->
+          <div class="shows_container" style="background-color: yellow;" v-if="(current_page === 'favorites')">
+            <!-- Make sure that all functions work with favorites -->
+            <ul class="container" v-if="current_page === 'favorites'">
+                  <li v-for="(show, index) in favorites" class="half lifted show_box">
+                      <img v-bind:src="show.image_url" class="anime_image">
+                      <div class="anime_info_box blue">
+                          <h5 style="text-align: center;">${show.title}</h5>
+                          <button v-if="show.favorite == false" class="favorites_card_button"
+                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: lightgrey; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button v-if="show.favorite == true" class="favorites_card_button" 
+                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: red; border-radius: 9px;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
+                          <div class="progress_bar_container">
+                            <div class="progress_bar_fill"></div>
+                          </div>
+                          
+                      </div>
+                  </li>
+              </ul>
+
+          </div>
+
+      {{pass}}
+  </div>
+
+</div>
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>

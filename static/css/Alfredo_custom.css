@@ -1,0 +1,82 @@
+#my_side_menu{
+    background-color: #2E51A2;
+    /* stupid.css change
+    width:150px;
+    margin-left:-140px;
+    */
+}
+#user_icon{
+    background-color: transparent;
+    color: white;
+    margin-top: 32px;
+    margin-bottom: 32px;
+
+}
+.side_bar_buttons_g1{
+    margin-bottom: 16px;
+    background-color: #E1E7F5;
+    color: black;
+}
+#sign_out{
+    background-color: #E75A7C;
+    color: white;
+    margin-top: 64px;
+}
+div.tabs{
+    padding-left: 100px;
+    width: 100%;
+    height: 48px;
+    background-color: white
+}
+button.tab_link {
+    background-color: white;
+    color: black;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    font-size: 17px;
+    width: 18%;
+}
+button.tab_link:hover{
+    background-color: red;
+}
+.show_box{
+    background-color: #2C363F;
+    height: 300px;
+    /*width: 47%;
+    margin-left: 25px;*/
+}
+.anime_image{
+    /*height: 355px;
+    width: 255px;*/
+    height: auto;
+    width: auto;
+    display: inline-block;
+    /*vertical-align: middle;*/
+}
+.anime_info_box{
+    display: inline-block;
+    vertical-align: top;
+    /*background-color: #2C363F;*/
+    background-color: blue;
+    /*width: 400px;
+    height: 355px;
+    margin-left: 20px;*/
+}
+button.favorites_card_button{
+    background-color: #2C363F;
+}
+
+.progress_bar_container{
+    background-color: lightgrey;
+    width: 100%;
+    height: 10px;
+}
+
+.progress_bar_fill{
+    background-color: red;
+    width: 50%;
+    height: 10px;
+}

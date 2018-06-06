@@ -1,0 +1,389 @@
+(dp1
+S'output'
+p2
+S'The "end" tag is unmatched, please check if you have a starting "block" tag'
+p3
+sS'layer'
+p4
+S"'layout.html'"
+p5
+sS'code'
+p6
+S'<html>\n  <head>\n    <meta charset="utf-8">\n    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">\n    <meta name="viewport" content="width=device-width, initial-scale=1.0" />\n    <meta name="apple-mobile-web-app-capable" content="yes" />\n    <link href="{{=URL(\'static\',\'css/stupid.css\')}}" rel="stylesheet" type="text/css"/>\n    <link href="{{=URL(\'static\',\'css/custom.css\')}}" rel="stylesheet" type="text/css"/>\n    <link href="{{=URL(\'static\',\'css/calendar.css\')}}" rel="stylesheet" type="text/css"/>\n    <link href="{{=URL(\'static\',\'css/web2py.css\')}}" rel="stylesheet" type="text/css"/>\n    <link href="{{=URL(\'static\',\'css/myapp.css\')}}" rel="stylesheet" type="text/css"/>\n    <link rel="stylesheet" href="{{=URL(\'static\', \'font-awesome-4.6.3/css/font-awesome.min.css\')}}">\n    {{include "web2py_ajax.html"}}\n  </head>\n  <body class="black">\n    {{if response.flash:}}\n    <div class="w2p_flash">\n      {{=response.flash}}\n    </div>\n    {{pass}}\n    <header class="black padded">\n      <div class="container middle max900">\n        <div class="fill middle">\n          <label class="ham padded fa fa-bars" for="menu"></label>\n          <div class="burger accordion">\n            <input type="checkbox" id="menu"/>\n            {{=MENU(response.menu,_class=\'menu\')}}\n            <ul class="menu right">\n              <li>\n                {{=auth.navbar(mode=\'dropdown\')}}\n              </li>\n            </ul>\n          </div>\n        </div>\n      </div>\n    </header>\n    <main class="" style="background-color: #E1E7F5;">\n      {{include}}\n    </main>\n    <!--\n    <footer class="black">\n      <div class="silver center padded social">\n        <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u={url}"></a>\n        <a class="fa fa-twitter" href="https://twitter.com/home?status={url}"></a>\n        <a class="fa fa-google" href="https://plus.google.com/share?url={url}"></a>\n      </div>\n      <div class="container padded max900">\n        <div class="fill">\n          Copyright @ 2016\n        </div>\n      </div>\n    </footer>\n    -->\n  </body>\n  <script src="{{=URL(\'static\',\'js/marked.min.js\')}}"></script>\n  <script src="{{=URL(\'static\',\'js/vue.min.js\')}}"></script>\n  {{end}}\n  <script>\n    jQuery(\'.social a\').each(function(){var t=jQuery(this); t.attr(\'href\',t.attr(\'href\').replace(\'{url}\',encodeURIComponent(window.location.href)));});\n  </script>\n</html>\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__module__'
+p12
+S"'gluon.rocket'"
+p13
+sS'__getslice__'
+p14
+S"<method-wrapper '__getslice__' of SocketTimeout object>"
+p15
+sS'__str__'
+p16
+S"<method-wrapper '__str__' of SocketTimeout object>"
+p17
+sS'__reduce__'
+p18
+S'<built-in method __reduce__ of SocketTimeout object>'
+p19
+sS'__dict__'
+p20
+S'{}'
+p21
+sS'__sizeof__'
+p22
+S'<built-in method __sizeof__ of SocketTimeout object>'
+p23
+sS'__weakref__'
+p24
+S'None'
+p25
+sS'message'
+p26
+S"'Socket timed out before request.'"
+p27
+sS'__init__'
+p28
+S"<method-wrapper '__init__' of SocketTimeout object>"
+p29
+sS'__setattr__'
+p30
+S"<method-wrapper '__setattr__' of SocketTimeout object>"
+p31
+sS'__reduce_ex__'
+p32
+S'<built-in method __reduce_ex__ of SocketTimeout object>'
+p33
+sS'__new__'
+p34
+S'<built-in method __new__ of type object>'
+p35
+sS'__format__'
+p36
+S'<built-in method __format__ of SocketTimeout object>'
+p37
+sS'__class__'
+p38
+S"<class 'gluon.rocket.SocketTimeout'>"
+p39
+sS'__doc__'
+p40
+S"'Exception for when a socket times out between requests.'"
+p41
+sS'__getitem__'
+p42
+S"<method-wrapper '__getitem__' of SocketTimeout object>"
+p43
+sS'__setstate__'
+p44
+S'<built-in method __setstate__ of SocketTimeout object>'
+p45
+sS'__getattribute__'
+p46
+S"<method-wrapper '__getattribute__' of SocketTimeout object>"
+p47
+sS'args'
+p48
+S"('Socket timed out before request.',)"
+p49
+sS'__subclasshook__'
+p50
+S'<built-in method __subclasshook__ of type object>'
+p51
+sS'__unicode__'
+p52
+S'<built-in method __unicode__ of SocketTimeout object>'
+p53
+sS'__delattr__'
+p54
+S"<method-wrapper '__delattr__' of SocketTimeout object>"
+p55
+sS'__repr__'
+p56
+S"<method-wrapper '__repr__' of SocketTimeout object>"
+p57
+sS'__hash__'
+p58
+S"<method-wrapper '__hash__' of SocketTimeout object>"
+p59
+ssS'evalue'
+p60
+S'Socket timed out before request.'
+p61
+sS'frames'
+p62
+(lp63
+(dp64
+S'file'
+p65
+S'/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py'
+p66
+sS'dump'
+p67
+(dp68
+S'self'
+p69
+S'<WSGIWorker(Thread-37, started daemon 140212487317248)>'
+p70
+sS'conn'
+p71
+S'<gluon.rocket.Connection object>'
+p72
+sS'self.run_app'
+p73
+S'<bound method WSGIWorker.run_app of <WSGIWorker(Thread-37, started daemon 140212487317248)>>'
+p74
+ssS'lnum'
+p75
+I1319
+sS'lines'
+p76
+(dp77
+I1314
+S'            # Enter connection serve loop'
+p78
+sI1315
+S'            while True:'
+p79
+sI1316
+S'                if __debug__:'
+p80
+sI1317
+S"                    self.err_log.debug('Serving a request')"
+p81
+sI1318
+S'                try:'
+p82
+sI1319
+S'                    self.run_app(conn)'
+p83
+sI1320
+S'                except:'
+p84
+sI1321
+S'                    exc = sys.exc_info()'
+p85
+sI1322
+S'                    handled = self._handleError(*exc)'
+p86
+sI1323
+S'                    if handled:'
+p87
+ssS'call'
+p88
+S'(self=<WSGIWorker(Thread-37, started daemon 140212487317248)>)'
+p89
+sS'func'
+p90
+S'run'
+p91
+sa(dp92
+g65
+S'/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py'
+p93
+sg67
+(dp94
+S'self'
+p95
+S'<WSGIWorker(Thread-37, started daemon 140212487317248)>'
+p96
+sS'self.environ'
+p97
+S'{\'HTTP_ACCEPT\': \'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8\', \'HTTP_ACCEPT_ENCODING\': \'gzip, deflate, br\', \'HTTP_ACCEPT_LANGUAGE\': \'en-US,en;q=0.9\', \'HTTP_CACHE_CONTROL\': \'max-age=0\', \'HTTP_CONNECTION\': \'keep-alive\', \'HTTP_COOKIE\': \'session_id_welcome=127.0.0.1-9d44000b-5819-4b66-...lproject="6:d77743f5-d04e-4656-aca6-c0f14fffbd76"\', \'HTTP_HOST\': \'127.0.0.1:8000\', \'HTTP_REFERER\': \'http://127.0.0.1:8000/FinalProject/default/user/login?_next=/FinalProject/default/index\', \'HTTP_UPGRADE_INSECURE_REQUESTS\': \'1\', \'HTTP_USER_AGENT\': \'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537....ML, like Gecko) Chrome/67.0.3396.62 Safari/537.36\', ...}'
+p98
+sS'sock_file'
+p99
+S'<socket._fileobject object>'
+p100
+sS'environ'
+p101
+S'undefined'
+p102
+sS'self.build_environ'
+p103
+S'<bound method WSGIWorker.build_environ of <WSGIWorker(Thread-37, started daemon 140212487317248)>>'
+p104
+sS'conn'
+p105
+S'<gluon.rocket.Connection object>'
+p106
+ssg75
+I1812
+sg76
+(dp107
+I1807
+S'        else:'
+p108
+sI1808
+S'            sock_file = conn.makefile(BUF_SIZE)'
+p109
+sI1809
+S''
+sI1810
+S'        try:'
+p110
+sI1811
+S'            # Read the headers and build our WSGI environment'
+p111
+sI1812
+S'            self.environ = environ = self.build_environ(sock_file, conn)'
+p112
+sI1813
+S''
+sI1814
+S'            # Handle 100 Continue'
+p113
+sI1815
+S"            if environ.get('HTTP_EXPECT', '') == '100-continue':"
+p114
+sI1816
+S"                res = environ['SERVER_PROTOCOL'] + ' 100 Continue\\r\\n\\r\\n'"
+p115
+ssg88
+S'(self=<WSGIWorker(Thread-37, started daemon 140212487317248)>, conn=<gluon.rocket.Connection object>)'
+p116
+sg90
+S'run_app'
+p117
+sa(dp118
+g65
+S'/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py'
+p119
+sg67
+(dp120
+S'sock_file'
+p121
+S'<socket._fileobject object>'
+p122
+sS'self.read_request_line'
+p123
+S'<bound method WSGIWorker.read_request_line of <W...rker(Thread-37, started daemon 140212487317248)>>'
+p124
+sS'self'
+p125
+S'<WSGIWorker(Thread-37, started daemon 140212487317248)>'
+p126
+sS'request'
+p127
+g102
+ssg75
+I1632
+sg76
+(dp128
+I1632
+S'        request = self.read_request_line(sock_file)'
+p129
+sI1633
+S''
+sI1634
+S'        # Copy the Base Environment'
+p130
+sI1635
+S'        environ = self.base_environ.copy()'
+p131
+sI1636
+S''
+sI1627
+S'                                      "wsgiorg.futures": executor.futures})'
+p132
+sI1628
+S''
+sI1629
+S'    def build_environ(self, sock_file, conn):'
+p133
+sI1630
+S'        """ Build the execution environment. """'
+p134
+sI1631
+S'        # Grab the request line'
+p135
+ssg88
+S'(self=<WSGIWorker(Thread-37, started daemon 140212487317248)>, sock_file=<socket._fileobject object>, conn=<gluon.rocket.Connection object>)'
+p136
+sg90
+S'build_environ'
+p137
+sa(dp138
+g65
+S'/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py'
+p139
+sg67
+(dp140
+S'global SocketTimeout'
+p141
+S"<class 'gluon.rocket.SocketTimeout'>"
+p142
+ssg75
+I1383
+sg76
+(dp143
+I1378
+S''
+sI1379
+S'                d = sock_file.readline()'
+p144
+sI1380
+S'                if PY3K:'
+p145
+sI1381
+S"                    d = d.decode('ISO-8859-1')"
+p146
+sI1382
+S'        except socket.timeout:'
+p147
+sI1383
+S"            raise SocketTimeout('Socket timed out before request.')"
+p148
+sI1384
+S'        except TypeError:'
+p149
+sI1385
+S'            raise SocketClosed('
+p150
+sI1386
+S"                'SSL bug caused closure of socket.  See '"
+p151
+sI1387
+S'                \'"https://groups.google.com/d/topic/web2py/P_Gw0JxWzCs".\')'
+p152
+ssg88
+S'(self=<WSGIWorker(Thread-37, started daemon 140212487317248)>, sock_file=<socket._fileobject object>)'
+p153
+sg90
+S'read_request_line'
+p154
+sasS'pyver'
+p155
+S'Python 2.7.14: /home/acuevas/anaconda2/bin/python (prefix: /home/acuevas/anaconda2)'
+p156
+sS'etype'
+p157
+S"<class 'gluon.rocket.SocketTimeout'>"
+p158
+sS'date'
+p159
+S'Mon Jun  4 12:23:35 2018'
+p160
+sS'locals'
+p161
+(dp162
+S'sock_file'
+p163
+S'<socket._fileobject object>'
+p164
+sS'self'
+p165
+S'<WSGIWorker(Thread-37, started daemon 140212487317248)>'
+p166
+sssS'traceback'
+p167
+S'Traceback (most recent call last):\n  File "/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py", line 1319, in run\n    self.run_app(conn)\n  File "/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py", line 1812, in run_app\n    self.environ = environ = self.build_environ(sock_file, conn)\n  File "/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py", line 1632, in build_environ\n    request = self.read_request_line(sock_file)\n  File "/home/acuevas/Documents/College/ThirdYear/CS183/web2py/gluon/rocket.py", line 1383, in read_request_line\n    raise SocketTimeout(\'Socket timed out before request.\')\nSocketTimeout: Socket timed out before request.\n'
+p168
+s.
