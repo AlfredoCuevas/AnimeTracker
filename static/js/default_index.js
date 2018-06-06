@@ -65,6 +65,24 @@ var app = function() {
         }
     };
 
+    self.info_button_clicked = function(mal_id){
+        console.log("getting info for " + mal_id);
+        self.vue.current_page = "infoPage";
+
+        let data_obj = {
+            mal_id: mal_id
+        }
+        $.getJSON(
+            get_anime_info_url,
+            data_obj,
+            function(anime){
+                self.vue.specified_anime = anime.anime_info;
+                console.log("Anime info retrieved: ");
+                console.log(self.vue.specified_anime);
+            }
+        );
+    }
+
     // for testing
     self.test_api = function(){
         console.log("about to call the api");
@@ -282,7 +300,7 @@ var app = function() {
         delimiters: ['${', '}'],
         unsafeDelimiters: ['!{', '}'],
         data: {
-            current_page: 'watching', // watching, planToWatch, onHold, completed, dropped
+            current_page: 'watching', // watching, planToWatch, onHold, completed, dropped, favorites, infoPage
             watching: [],
             planToWatch: [],
             onHold: [],
@@ -291,6 +309,7 @@ var app = function() {
             input_search: "",
             searched_anime: [],
             favorites:[],
+            specified_anime: "",
         },
         methods: {
             tab_clicked: self.tab_clicked,
@@ -300,6 +319,7 @@ var app = function() {
             add_selected_to_planToWatch: self.add_selected_to_planToWatch,
             add_favorites: self.add_favorites,
             remove_favorites: self.remove_favorites,
+            info_button_clicked: self.info_button_clicked,
             test_api: self.test_api,
             test_post_entry: self.test_post_entry,
         }

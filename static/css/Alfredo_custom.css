@@ -69,6 +69,9 @@ button.favorites_card_button{
     background-color: #2C363F;
 }
 
+button.info_button{
+    background-color: #2C363F;
+}
 .progress_bar_container{
     background-color: lightgrey;
     width: 100%;
@@ -79,4 +82,60 @@ button.favorites_card_button{
     background-color: red;
     width: 50%;
     height: 10px;
+}
+
+/* Specific Info Page */
+div.specific_info_container{
+    width: 100%;
+}
+
+div.info_container_2{
+    background-color: orange;
+    margin: auto;
+    width: 80%;
+}
+
+#specific_anime_image{
+    display: inline-block;
+    margin-top: 30px;
+}
+
+#anime_status{
+    display: inline-block;
+    background-color: darkgrey;
+    width: 60%;
+    vertical-align: top;
+    border-radius: 1px;
+    height: 150px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-top: 30px;
+}
+
+div.info_box_title{
+    text-align: center;
+    width: 100%;
+    background-color: #2E51A2;
+    height: 20px;
+    font-size: 20;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+div.anime_status_elements{
+
+}
+
+#select_list_status, #select_rating, #select_episode_count{
+    -webkit-appearance: none;
+    outline: none;
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    margin: 0.5px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    background-color: white;
+}
+#select_list_status, #select_rating{
+    margin-top: 50px;
 }

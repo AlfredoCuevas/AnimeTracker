@@ -105,3 +105,9 @@ def get_favorites_list():
 
     return response.json(dict(show_list=show_list))
 
+
+def get_anime_info():
+    mal_id = request.vars.mal_id
+    anime_info = jikan.anime(mal_id)
+
+    return response.json(dict(anime_info=anime_info))
