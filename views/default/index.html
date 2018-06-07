@@ -251,60 +251,77 @@
           <div class="specific_info_container" v-if="(current_page === 'infoPage')">
             <div class="info_container_2">
               <img v-bind:src="specified_anime.image_url" id="specific_anime_image">
-              <div id="anime_status">
-                <div class="info_box_title">Status</div>
-                <div class="anime_status_elements container" style="margin-right: 0;">
+              <div id="anime_status_ranking">
 
-                  <div class="third">
-                    <!--<label class="">Select Option</label>-->
-                    <div class="container">
-                      <label class="quarter" style="margin-top: 31px">List: <!-- ${specified_anime_user_info.list_status} --></label>
-                      <select class="fill" id="select_list_status" v-model="stat" name="stat">
-                        <option v-for=" stat in list_stats" :value="stat">${stat}</option>
-                        <!-- <option>Plan To Watch</option>
-                        <option>Watching</option>
-                        <option>On Hold</option>
-                        <option>Completed</option>
-                        <option>Dropped</option> -->
-                      </select>
-                    </div>
-                  </div>
+                <div id="anime_status">
+                  <div class="info_box_title">Status</div>
+                  <div class="anime_status_elements container" style="margin-right: 0;">
 
-                  <div class="third">
-                    <div class="container">
-                      <label class="quarter center" style="margin-top: 31px">Rating: <!-- ${specified_anime_user_info.user_score} --></label>
-                      <select class="fill" id="select_rating" v-model="rating" name="rating">
-                        <option v-for="rating in ratings" :value="rating">${rating}</option>
-                        <!-- <option >(0) Unrated</option>
-                        <option>(1) Garbage</option>
-                        <option>(2) Horrible</option>
-                        <option>(3) Very Bad</option>
-                        <option>(4) Bad</option>
-                        <option>(5) Average</option>
-                        <option>(6) Ok</option>
-                        <option>(7) Good</option>
-                        <option>(8) Great</option>
-                        <option>(9) Amazing</option>
-                        <option>(10) Work Of Art</option> -->
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="third">
-                    <div class="container">
-                      <label class="quarter center" style="margin-top: 31px">
-                      Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
-                      <div class="center" style="margin-top: 0px">
-                        <input type="number" placeholder="0" v-model="ep_count" 
-                        step="1" min="0" max="100" class="fill" id="select_episode_count">
+                    <div class="third">
+                      <!--<label class="">Select Option</label>-->
+                      <div class="container">
+                        <label class="quarter" style="margin-top: 31px">List: <!-- ${specified_anime_user_info.list_status} --></label>
+                        <select class="fill" id="select_list_status" v-model="stat" name="stat">
+                          <option v-for=" stat in list_stats" :value="stat">${stat}</option>
+                          <!-- <option>Plan To Watch</option>
+                          <option>Watching</option>
+                          <option>On Hold</option>
+                          <option>Completed</option>
+                          <option>Dropped</option> -->
+                        </select>
                       </div>
                     </div>
+
+                    <div class="third">
+                      <div class="container">
+                        <label class="quarter center" style="margin-top: 31px">Rating: <!-- ${specified_anime_user_info.user_score} --></label>
+                        <select class="fill" id="select_rating" v-model="rating" name="rating">
+                          <option v-for="rating in ratings" :value="rating">${rating}</option>
+                          <!-- <option >(0) Unrated</option>
+                          <option>(1) Garbage</option>
+                          <option>(2) Horrible</option>
+                          <option>(3) Very Bad</option>
+                          <option>(4) Bad</option>
+                          <option>(5) Average</option>
+                          <option>(6) Ok</option>
+                          <option>(7) Good</option>
+                          <option>(8) Great</option>
+                          <option>(9) Amazing</option>
+                          <option>(10) Work Of Art</option> -->
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="third">
+                      <div class="container">
+                        <label class="quarter center" style="margin-top: 31px">
+                        Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
+                        <div class="center" style="margin-top: 0px">
+                          <input type="number" placeholder="0" v-model="ep_count" 
+                          step="1" min="0" max="100" class="fill" id="select_episode_count">
+                        </div>
+                      </div>
+                    </div>
+                    <div> <button v-on:click="update_stat_ep_rating(specified_anime.mal_id)">Submit Changes</button></div>
                   </div>
-                  <div> <button v-on:click="update_stat_ep_rating(specified_anime.mal_id)">Submit Changes</button></div>
+                  
                 </div>
-                
+
+                <div id="anime_ranking">
+                  <div class="info_box_title"> Community Ranking</div>
+                  <div class="container anime_ranking_elements">
+                    
+                    <div class=" anime_ranking_elements_container third "><p>Score: ${specified_anime.score}</p></div>
+                    <div class=" anime_ranking_elements_container third "><p>Ranking: #${specified_anime.rank}</p></div>
+                    <div class=" anime_ranking_elements_container third "><p>Popularity: #${specified_anime.popularity}</p></div>
+
+                  </div>
+                </div>
               </div>
+
             </div>
+
+            <div></div>
           </div>
 
       {{pass}}

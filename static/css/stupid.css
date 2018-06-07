@@ -332,7 +332,7 @@ a:not(.btn):not(.noeffect):after {
 
 
 /*** cards from http://codepen.io/edeesims/pen/iGDzk ***/
-.card {perspective: 500px; max-width:100%}
+/*.card {perspective: 500px; max-width:100%}
 .card>div {
   position: absolute;
   width: 100%;
@@ -341,10 +341,10 @@ a:not(.btn):not(.noeffect):after {
   transition: transform 1s;
   transform-style: preserve-3d;
 }
-/*.card:hover>div {
+.card:hover>div {
   transform: rotateY( 180deg ) ;
   transition: transform 0.5s;
-}*/
+}
 .card>div>div {
   position: absolute;
   height: 100%;
@@ -353,7 +353,7 @@ a:not(.btn):not(.noeffect):after {
 }
 .card>div>div:nth-child(2) {
   transform: rotateY( 180deg );
-}
+}*/
 
 /**** tags ****/
 .tags > span {
