@@ -42,7 +42,13 @@ button.tab_link {
 button.tab_link:hover{
     background-color: red;
 }
-.show_box{
+
+/* Displaying shows tiles--------------------------*/
+
+.shows_container{
+    background-color: yellow;
+}
+li.show_box{
     background-color: #2C363F;
     height: 300px;
     /*width: 47%;
@@ -51,7 +57,7 @@ button.tab_link:hover{
 .anime_image{
     /*height: 355px;
     width: 255px;*/
-    height: auto;
+    height: 100%;
     width: auto;
     display: inline-block;
     /*vertical-align: middle;*/
@@ -61,16 +67,26 @@ button.tab_link:hover{
     vertical-align: top;
     /*background-color: #2C363F;*/
     background-color: blue;
+    height: 100%;
+    width:auto;
     /*width: 400px;
     height: 355px;
     margin-left: 20px;*/
 }
+div.anime_info_box > .anime_title{
+    text-align: center;
+}
+
 button.favorites_card_button{
     background-color: #2C363F;
+    color: lightgrey; 
+    border-radius: 9px;
 }
 
 button.info_button{
     background-color: #2C363F;
+    color: green;
+    border-radius: 9px;
 }
 .progress_bar_container{
     background-color: lightgrey;
@@ -84,9 +100,10 @@ button.info_button{
     height: 10px;
 }
 
-/* Specific Info Page */
+/* Specific Info Page -----------------------------------------------*/
 div.specific_info_container{
     width: 100%;
+    background-color: yellow;
 }
 
 div.info_container_2{
@@ -137,5 +154,5 @@ div.anime_status_elements{
     background-color: white;
 }
 #select_list_status, #select_rating{
-    margin-top: 50px;
+    /*margin-top: 50px;*/
 }

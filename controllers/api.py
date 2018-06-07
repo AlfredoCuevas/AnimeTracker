@@ -110,4 +110,22 @@ def get_anime_info():
     mal_id = request.vars.mal_id
     anime_info = jikan.anime(mal_id)
 
-    return response.json(dict(anime_info=anime_info))
+    q = ((db.user_show_list.user_id == auth.user.id) & (db.user_show_list.mal_id == mal_id))
+    user_anime_info = db(q).select().first()
+
+    return response.json(dict(anime_info=anime_info, user_anime_info=user_anime_info))
+
+
+def update_users_stats():
+    mal_id = request.vars.mal_id
+    episodes = request.vars.episodes_watched
+    rating = request.vars.user_rating
+    watch_list = request.vars.watch_list
+    #there is a chance some of these values are strings when they should be integers
+
+    q = ((db.user_show_list.user_id == auth.user.id) & (db.user_show_list.mal_id == mal_id))
+    db(q).update(episodes_watched=episodes, user_score=rating, list_status=watch_list)
+
+    user_anime_info = db(q).select().first()
+
+    return response.json(dict(user_anime_info=user_anime_info))

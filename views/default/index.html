@@ -15,6 +15,7 @@
             var remove_favorites_url = "{{=URL('api', 'remove_favorites')}}";
             var get_favorites_list_url = "{{=URL('api', 'get_favorites_list')}}";
             var get_anime_info_url = "{{=URL('api', 'get_anime_info')}}";
+            var update_users_stats_url = "{{=URL('api', 'update_users_stats')}}";
             var user_logged_in = false;
         </script>
 {{end}}
@@ -64,26 +65,76 @@
 
           </div>
 
-          <!-- Defines the container used when displaying lists of shows -->
-          <div class="shows_container" style="background-color: yellow;" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
+          <!-- Defines the container used when displaying lists of shows ---------------------------------------------------------- -->
+          <div class="shows_container container" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
               <!-- planToWatch List of shows -->
-              <ul class="container" v-if="current_page === 'planToWatch'">
+              <!-- *********************** Scott: This is the code that I'm trying to use to make containers **********-->
+              <!-- ******** Scott: The related css file is Alfredo_custom.css but I haven't created any for this container yet-->
+              <ul v-if="current_page === 'planToWatch'">
+                <li v-for="(show, index) in planToWatch">
+
+                  <div class="card half">
+
+                    <div class="image_holder third">
+                      <img v-bind:src="show.image_url">
+                    </div>
+                    <div class="anime_info_container twothirds">
+
+                      <div class="show_title container">
+                        <p>${show.title}</p>
+                      </div>
+                      <div class="button_container container">
+
+                        <div class="button_container_left container half">
+                          <div class="button_fav half">
+                            <button v-if="show.favorite == false" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                              <i class="fa fa-heart fa-2x"></i>
+                            </button>
+                            <button v-if="show.favorite == true" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                              <i class="fa fa-heart fa-2x"></i>
+                            </button>
+                          </div>
+                          <div class="button_info half">
+                            <button v-on:click="info_button_clicked(show.mal_id)">
+                              <i class="fa fa-info fa-2x"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="episode_container container">
+                        <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
+                      </div>
+                      <div class="progress_bar_container2 container">
+                        <div class="progress_bar_empty"></div>
+                        <div class="progress_bar_filled"></div>
+                      </div>
+
+                    </div>
+
+                  </div>
+                  
+                </li>
+              </ul>
+              <!-- ********* Scott: This is the end of the code that I am having problems with *******-->
+
+              <!-- <ul class="container" v-if="current_page === 'planToWatch'">
                   <li v-for="(show, index) in planToWatch" class="half lifted show_box">
                       <img v-bind:src="show.image_url" class="anime_image">
                       <div class="anime_info_box blue">
-                          <h5 style="text-align: center;">${show.title}</h5>
+                          <h5 class="anime_title"> ${show.title}</h5>
                           <button v-if="show.favorite == false" class="favorites_card_button"
-                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: lightgrey; border-radius: 9px;">
+                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
                               <i class="fa fa-heart fa-2x"></i>
                           </button>
                           <button v-if="show.favorite == true" class="favorites_card_button" 
                           v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: red; border-radius: 9px;">
+                          style="color: red;">
                               <i class="fa fa-heart fa-2x"></i>
                           </button>
-                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)" 
-                          style="color: green; border-radius: 9px">
+                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
                             <i class="fa fa-info fa-2x"></i>
                           </button>
                           <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
@@ -93,18 +144,24 @@
                           
                       </div>
                   </li>
-              </ul>
+              </ul> -->
 
               <ul class="container" v-if="current_page === 'watching'">
                   <li v-for="(show, index) in watching" class="half lifted show_box">
                       <img v-bind:src="show.image_url" class="anime_image">
                       <div class="anime_info_box blue">
-                          <h5 style="text-align: center;">${show.title}</h5>
-                          <button v-if="show.favorite == false" class="favorites_card_button" v-on:click="" style="color: lightgrey; border-radius: 9px;">
+                          <h5 class="anime_title"> ${show.title}</h5>
+                          <button v-if="show.favorite == false" class="favorites_card_button"
+                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
                               <i class="fa fa-heart fa-2x"></i>
                           </button>
-                          <button v-if="show.favorite == true" class="favorites_card_button" v-on:click="" style="color: red; border-radius: 9px;">
+                          <button v-if="show.favorite == true" class="favorites_card_button" 
+                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: red;">
                               <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
+                            <i class="fa fa-info fa-2x"></i>
                           </button>
                           <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
                           <div class="progress_bar_container">
@@ -116,7 +173,7 @@
               </ul>
           </div>
 
-          <!-- Search Page: Search for an Anime to Add to Your list -->
+          <!-- Search Page: Search for an Anime to Add to Your list ------------------------------------------------------------------- -->
           <div class="search_page" v-if="current_page === 'search'">
             <div class="search_bar_container">
               <input type="text" placeholder="Search.." name="search" v-model="input_search">
@@ -142,12 +199,12 @@
             
           </div>
 
-          <!-- Favorites Page: Displays all the anime that the user has labeled as favorite-->
+          <!-- Favorites Page: Displays all the anime that the user has labeled as favorite ----------------------------------------------->
           <div class="shows_container" style="background-color: yellow;" v-if="(current_page === 'favorites')">
             <!-- Make sure that all functions work with favorites -->
             <ul class="container" v-if="current_page === 'favorites'">
                   <li v-for="(show, index) in favorites" class="half lifted show_box">
-                      <img v-bind:src="show.image_url" class="anime_image">
+                      <!-- <img v-bind:src="show.image_url" class="anime_image">
                       <div class="anime_info_box blue">
                           <h5 style="text-align: center;">${show.title}</h5>
                           <button v-if="show.favorite == false" class="favorites_card_button"
@@ -163,6 +220,25 @@
                           <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
                           <div class="progress_bar_container">
                             <div class="progress_bar_fill"></div>
+                          </div> -->
+                      <img v-bind:src="show.image_url" class="anime_image">
+                      <div class="anime_info_box blue">
+                          <h5 class="anime_title"> ${show.title}</h5>
+                          <button v-if="show.favorite == false" class="favorites_card_button"
+                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button v-if="show.favorite == true" class="favorites_card_button" 
+                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
+                          style="color: red;">
+                              <i class="fa fa-heart fa-2x"></i>
+                          </button>
+                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
+                            <i class="fa fa-info fa-2x"></i>
+                          </button>
+                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
+                          <div class="progress_bar_container">
+                            <div class="progress_bar_fill"></div>
                           </div>
                           
                       </div>
@@ -171,8 +247,8 @@
 
           </div>
 
-          <!-- Info Page for a specific Anime -->
-          <div class="specific_info_container" style="background-color: yellow;" v-if="(current_page === 'infoPage')">
+          <!-- Info Page for a specific Anime --------------------------------------------------------------------------------------------->
+          <div class="specific_info_container" v-if="(current_page === 'infoPage')">
             <div class="info_container_2">
               <img v-bind:src="specified_anime.image_url" id="specific_anime_image">
               <div id="anime_status">
@@ -181,39 +257,50 @@
 
                   <div class="third">
                     <!--<label class="">Select Option</label>-->
-                    <select class="fill" id="select_list_status">
-                      <option>Plan To Watch</option>
-                      <option>Watching</option>
-                      <option>On Hold</option>
-                      <option>Completed</option>
-                      <option>Dropped</option>
-                    </select>
-                  </div>
-
-                  <div class="third">
-                    <select class="fill" id="select_rating">
-                      <option>(0) Unrated</option>
-                      <option>(1) Garbage</option>
-                      <option>(2) Horrible</option>
-                      <option>(3) Very Bad</option>
-                      <option>(4) Bad</option>
-                      <option>(5) Average</option>
-                      <option>(6) Ok</option>
-                      <option>(7) Good</option>
-                      <option>(8) Great</option>
-                      <option>(9) Amazing</option>
-                      <option>(10) Work Of Art</option>
-                    </select>
+                    <div class="container">
+                      <label class="quarter" style="margin-top: 31px">List: <!-- ${specified_anime_user_info.list_status} --></label>
+                      <select class="fill" id="select_list_status" v-model="stat" name="stat">
+                        <option v-for=" stat in list_stats" :value="stat">${stat}</option>
+                        <!-- <option>Plan To Watch</option>
+                        <option>Watching</option>
+                        <option>On Hold</option>
+                        <option>Completed</option>
+                        <option>Dropped</option> -->
+                      </select>
+                    </div>
                   </div>
 
                   <div class="third">
                     <div class="container">
-                      <label class="quarter center" style="margin-top: 31px">Episodes:</label>
+                      <label class="quarter center" style="margin-top: 31px">Rating: <!-- ${specified_anime_user_info.user_score} --></label>
+                      <select class="fill" id="select_rating" v-model="rating" name="rating">
+                        <option v-for="rating in ratings" :value="rating">${rating}</option>
+                        <!-- <option >(0) Unrated</option>
+                        <option>(1) Garbage</option>
+                        <option>(2) Horrible</option>
+                        <option>(3) Very Bad</option>
+                        <option>(4) Bad</option>
+                        <option>(5) Average</option>
+                        <option>(6) Ok</option>
+                        <option>(7) Good</option>
+                        <option>(8) Great</option>
+                        <option>(9) Amazing</option>
+                        <option>(10) Work Of Art</option> -->
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="third">
+                    <div class="container">
+                      <label class="quarter center" style="margin-top: 31px">
+                      Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
                       <div class="center" style="margin-top: 0px">
-                        <input type="number" placeholder="0" value="0" step="1" min="0" max="100" class="fill" id="select_episode_count">
+                        <input type="number" placeholder="0" v-model="ep_count" 
+                        step="1" min="0" max="100" class="fill" id="select_episode_count">
                       </div>
                     </div>
                   </div>
+                  <div> <button v-on:click="update_stat_ep_rating(specified_anime.mal_id)">Submit Changes</button></div>
                 </div>
                 
               </div>

@@ -65,6 +65,11 @@ var app = function() {
         }
     };
 
+    /**
+     * takes a mal_id and returns the informaiton from the api and the user
+     * @param  {integer} mal_id [id used by myanimelist]
+     * @return places the information inside of self.vue.specified_anime
+     */
     self.info_button_clicked = function(mal_id){
         console.log("getting info for " + mal_id);
         self.vue.current_page = "infoPage";
@@ -77,8 +82,28 @@ var app = function() {
             data_obj,
             function(anime){
                 self.vue.specified_anime = anime.anime_info;
+                self.vue.specified_anime_user_info = anime.user_anime_info;
+
+                // updates the ep_count, rating, and stat values so that they appear in the select boxes correctly
+                self.vue.ep_count = anime.user_anime_info.episodes_watched;
+                self.vue.rating = anime.user_anime_info.user_score;
+
+                if(anime.user_anime_info.list_status === 'planToWatch')
+                    self.vue.stat = "Plan To Watch";
+                else if(anime.user_anime_info.list_status === 'watching')
+                    self.vue.stat = "Watching";
+                else if(anime.user_anime_info.list_status === 'onHold')
+                    self.vue.stat = "On Hold";
+                else if(anime.user_anime_info.list_status === 'completed')
+                    self.vue.stat = "Completed";
+                else if(anime.user_anime_info.list_status === 'dropped')
+                    self.vue.stat = "Dropped";
+                else
+                    console.error("Something went wrong, self.vue.stat not adjusted");
+
                 console.log("Anime info retrieved: ");
                 console.log(self.vue.specified_anime);
+                console.log(self.vue.specified_anime_user_info);
             }
         );
     }
@@ -294,6 +319,38 @@ var app = function() {
         );
     }
 
+    // This will allow the episode_count, rating, and list_status to be updated in the database
+    self.update_stat_ep_rating = function(mal_id){
+        let temp_page = 'planToWatch';
+        if(self.vue.stat === "Plan To Watch")
+            temp_page = 'planToWatch';
+        else if(self.vue.stat === "Watching")
+            temp_page = 'watching';
+        else if(self.vue.stat === "On Hold")
+            temp_page = 'onHold';
+        else if(self.vue.stat === "Completed")
+            temp_page = 'completed';
+        else if(self.vue.stat === "Dropped")
+            temp_page = 'dropped';
+
+        let data_obj = {
+            mal_id: mal_id,
+            episodes_watched: self.vue.ep_count,
+            user_rating: self.vue.rating,
+            watch_list: temp_page,
+        };
+
+        $.post(
+            update_users_stats_url,
+            data_obj,
+            function(anime){
+                console.log("Successful update, New user-anime info retrieved");
+                self.vue.specified_anime_user_info = anime.user_anime_info;
+            }
+        );
+
+    }
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -309,7 +366,13 @@ var app = function() {
             input_search: "",
             searched_anime: [],
             favorites:[],
-            specified_anime: "",
+            specified_anime: "", // info retrieved from api
+            specified_anime_user_info: "", // info retrieved from user database
+            ratings:[0,1,2,3,4,5,6,7,8,9,10],
+            rating: 0,
+            list_stats: ['Plan To Watch', 'Watching', 'On Hold', 'Completed', 'Dropped'],
+            stat: 'Plan To Watch',
+            ep_count: 0,
         },
         methods: {
             tab_clicked: self.tab_clicked,
@@ -322,6 +385,7 @@ var app = function() {
             info_button_clicked: self.info_button_clicked,
             test_api: self.test_api,
             test_post_entry: self.test_post_entry,
+            update_stat_ep_rating: self.update_stat_ep_rating,
         }
 
     });
