@@ -58,7 +58,7 @@
           <!-- Creates the Tabs for different lists when on the home screen -->
           <div class="tabs" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
               <button class="tab_link" id="initial" v-on:click="tab_clicked('watching', $event)">Watching</button>
-              <button class="tab_link" v-on:click="tab_clicked('planToWatch', $event)">Plan To Watch</button>
+              <button class="tab_link" v-on:click="tab_clicked('planToWatch', $event)">Planned</button>
               <button class="tab_link" v-on:click="tab_clicked('onHold', $event)">On Hold</button>
               <button class="tab_link" v-on:click="tab_clicked('completed', $event)">Completed</button>
               <button class="tab_link" v-on:click="tab_clicked('dropped', $event)">Dropped</button>
@@ -66,111 +66,183 @@
           </div>
 
           <!-- Defines the container used when displaying lists of shows ---------------------------------------------------------- -->
-          <div class="shows_container container" v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
+          <div class="shows_container container" style="background-color: #E1E7F5; padding-top: 20px; padding-left: 100px;"
+          v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
               <!-- planToWatch List of shows -->
-              <!-- *********************** Scott: This is the code that I'm trying to use to make containers **********-->
-              <!-- ******** Scott: The related css file is Alfredo_custom.css but I haven't created any for this container yet-->
               <ul v-if="current_page === 'planToWatch'">
-                <li v-for="(show, index) in planToWatch">
-
-                  <div class="card half">
-
-                    <div class="image_holder third">
-                      <img v-bind:src="show.image_url">
-                    </div>
-                    <div class="anime_info_container twothirds">
-
-                      <div class="show_title container">
-                        <p>${show.title}</p>
-                      </div>
-                      <div class="button_container container">
-
-                        <div class="button_container_left container half">
-                          <div class="button_fav half">
-                            <button v-if="show.favorite == false" 
+                <li v-for="(show, index) in planToWatch" style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
                             v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
-                              <i class="fa fa-heart fa-2x"></i>
-                            </button>
-                            <button v-if="show.favorite == true" 
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
                             v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
-                              <i class="fa fa-heart fa-2x"></i>
-                            </button>
-                          </div>
-                          <div class="button_info half">
-                            <button v-on:click="info_button_clicked(show.mal_id)">
-                              <i class="fa fa-info fa-2x"></i>
-                            </button>
-                          </div>
-                        </div>
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
 
-                      </div>
-                      <div class="episode_container container">
-                        <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
-                      </div>
-                      <div class="progress_bar_container2 container">
-                        <div class="progress_bar_empty"></div>
-                        <div class="progress_bar_filled"></div>
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
                       </div>
 
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
                     </div>
-
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                   </div>
-                  
                 </li>
               </ul>
-              <!-- ********* Scott: This is the end of the code that I am having problems with *******-->
 
-              <!-- <ul class="container" v-if="current_page === 'planToWatch'">
-                  <li v-for="(show, index) in planToWatch" class="half lifted show_box">
-                      <img v-bind:src="show.image_url" class="anime_image">
-                      <div class="anime_info_box blue">
-                          <h5 class="anime_title"> ${show.title}</h5>
-                          <button v-if="show.favorite == false" class="favorites_card_button"
-                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button v-if="show.favorite == true" class="favorites_card_button" 
-                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: red;">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
-                            <i class="fa fa-info fa-2x"></i>
-                          </button>
-                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
-                          <div class="progress_bar_container">
-                            <div class="progress_bar_fill"></div>
-                          </div>
-                          
-                      </div>
-                  </li>
-              </ul> -->
+              <ul v-if="current_page === 'watching'">
+                <li v-for="(show, index) in watching" 
+                style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
 
-              <ul class="container" v-if="current_page === 'watching'">
-                  <li v-for="(show, index) in watching" class="half lifted show_box">
-                      <img v-bind:src="show.image_url" class="anime_image">
-                      <div class="anime_info_box blue">
-                          <h5 class="anime_title"> ${show.title}</h5>
-                          <button v-if="show.favorite == false" class="favorites_card_button"
-                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button v-if="show.favorite == true" class="favorites_card_button" 
-                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: red;">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
-                            <i class="fa fa-info fa-2x"></i>
-                          </button>
-                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
-                          <div class="progress_bar_container">
-                            <div class="progress_bar_fill"></div>
-                          </div>
-                          
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
                       </div>
-                  </li>
+
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
+                    </div>
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </li>
               </ul>
+
+              <ul v-if="current_page === 'onHold'">
+                <li v-for="(show, index) in onHold" 
+                style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
+
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
+                      </div>
+
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
+                    </div>
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <ul v-if="current_page === 'completed'">
+                <li v-for="(show, index) in completed" 
+                style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
+
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
+                      </div>
+
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
+                    </div>
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
+              <ul v-if="current_page === 'dropped'">
+                <li v-for="(show, index) in dropped" 
+                style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
+
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
+                      </div>
+
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
+                    </div>
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+
           </div>
 
           <!-- Search Page: Search for an Anime to Add to Your list ------------------------------------------------------------------- -->
@@ -200,49 +272,42 @@
           </div>
 
           <!-- Favorites Page: Displays all the anime that the user has labeled as favorite ----------------------------------------------->
-          <div class="shows_container" style="background-color: yellow;" v-if="(current_page === 'favorites')">
+          <div class="shows_container" style="background-color: #E1E7F5; padding-top: 20px; padding-left: 100px;" v-if="(current_page === 'favorites')">
+
             <!-- Make sure that all functions work with favorites -->
-            <ul class="container" v-if="current_page === 'favorites'">
-                  <li v-for="(show, index) in favorites" class="half lifted show_box">
-                      <!-- <img v-bind:src="show.image_url" class="anime_image">
-                      <div class="anime_info_box blue">
-                          <h5 style="text-align: center;">${show.title}</h5>
-                          <button v-if="show.favorite == false" class="favorites_card_button"
-                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: lightgrey; border-radius: 9px;">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button v-if="show.favorite == true" class="favorites_card_button" 
-                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: red; border-radius: 9px;">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
-                          <div class="progress_bar_container">
-                            <div class="progress_bar_fill"></div>
-                          </div> -->
-                      <img v-bind:src="show.image_url" class="anime_image">
-                      <div class="anime_info_box blue">
-                          <h5 class="anime_title"> ${show.title}</h5>
-                          <button v-if="show.favorite == false" class="favorites_card_button"
-                          v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button v-if="show.favorite == true" class="favorites_card_button" 
-                          v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)" 
-                          style="color: red;">
-                              <i class="fa fa-heart fa-2x"></i>
-                          </button>
-                          <button class="info_button" v-on:click="info_button_clicked(show.mal_id)">
-                            <i class="fa fa-info fa-2x"></i>
-                          </button>
-                          <p>Episodes: ${show.episodes_watched} / ${show.episode_number}</p>
-                          <div class="progress_bar_container">
-                            <div class="progress_bar_fill"></div>
-                          </div>
-                          
+              <ul v-if="current_page === 'favorites'">
+                <li v-for="(show, index) in favorites" 
+                style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
+                  <div class="card" style="width:300px; height: 650px; background-color: #2C363F; color: white;">
+                    <img class="card-img-top" style="height: 400px" v-bind:src="show.image_url" alt="Card image">
+                    <div class="card-body">
+                      <h4 class="card-title">${show.title}</h4>
+          
+                      <div class="card-body" style="padding-left: 0px;">
+                        <button v-if="show.favorite == false" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="add_favorites(show.id, show.mal_id, index, current_page)">
+                          <i class="fa fa-heart fa-2x"></i>
+                        </button>
+                        <button v-if="show.favorite == true" style="border-radius: 10px; background-color: #2E51A2;" 
+                            v-on:click="remove_favorites(show.id, show.mal_id, index, current_page)">
+                            <i class="fa fa-heart fa-2x" style="color: red"></i>
+                        </button>
+
+                        <button v-on:click="info_button_clicked(show.mal_id)" style="border-radius: 10px; background-color: #2E51A2;">
+                          <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
                       </div>
-                  </li>
+
+                      <h6>Episodes: ${show.episodes_watched} / ${show.episode_number}</h6>
+        
+                    </div>
+                    <div class="progress ">
+                      <div class="progress-bar" role="progressbar" 
+                      v-bind:style="{width: (show.episodes_watched * 100 /show.episode_number) + '%'}"
+                       aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </li>
               </ul>
 
           </div>
