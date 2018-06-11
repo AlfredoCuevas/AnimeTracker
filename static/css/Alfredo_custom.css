@@ -598,6 +598,7 @@ div.search_page_container{
 }
 
 #search_input_box{
+    margin-top: 20px;
     width: 90%;
     height: 30px;
     font-size: 1.0em;

@@ -391,7 +391,7 @@
                           Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
                           <div class="center" style="margin-top: 0px">
                             <input type="number" placeholder="0" v-model="ep_count"
-                            step="1" min="0" max="100" class="fill" id="select_episode_count">
+                            step="1" min="0" v-bind:max="specified_anime_user_info.episode_number" class="fill" id="select_episode_count">
                           </div>
                         </div>
                       </div>
