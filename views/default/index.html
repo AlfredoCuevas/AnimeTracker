@@ -16,6 +16,8 @@
             var get_favorites_list_url = "{{=URL('api', 'get_favorites_list')}}";
             var get_anime_info_url = "{{=URL('api', 'get_anime_info')}}";
             var update_users_stats_url = "{{=URL('api', 'update_users_stats')}}";
+            var log_out_url = "{{=URL('default', 'user', args='logout')}}"; // Need to fix the redirect
+            console.log(log_out_url);
             var user_logged_in = false;
         </script>
 {{end}}
@@ -41,16 +43,16 @@
               <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('favorites')">
                   <i class="fa fa-heart fa-2x"></i>
               </button>
-              <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('add')">
+              <!-- <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('add')">
                   <i class="fa fa-plus fa-2x"></i>
-              </button>
+              </button> -->
               <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('search')">
                   <i class="fa fa-search fa-2x"></i>
               </button>
               <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('random')">
                   <i class="fa fa-question-circle fa-2x"></i>
               </button>
-              <button class="rounded center" id="sign_out">
+              <button class="rounded center" id="sign_out" v-on:click="log_out">
                   <i class="fa fa-sign-out fa-2x"></i>
               </button>
           </div>
@@ -247,26 +249,51 @@
 
           <!-- Search Page: Search for an Anime to Add to Your list ------------------------------------------------------------------- -->
           <div class="search_page" v-if="current_page === 'search'">
-            <div class="search_bar_container">
-              <input type="text" placeholder="Search.." name="search" v-model="input_search">
-              <button type="submit" v-on:click="search_for_anime()"><i class="fa fa-search"></i></button>
-            </div>
+            <div class="search_page_container">
+              <div class="search_bar_container">
+                <input id="search_input_box" type="text" placeholder="Search.." name="search" v-model="input_search">
+                <button class="search_submit_button" type="submit" v-on:click="search_for_anime()"><i class="fa fa-search"></i></button>
+              </div>
 
-            <div class="search_result_container">
-              <ul>
-                <li v-for="(searched_show, index) in searched_anime">
-                  <img v-bind:src = "searched_show.image_url">
-                  <div style="color: black">
-                      <p>Title: ${searched_show.title}</p>
-                      <p>Type: ${searched_show.type}</p>
-                      <p>Community Rating: ${searched_show.score}</p>
-                      <p>Number of Episodes: ${searched_show.episodes}</p>
-                  </div>
-                  <button v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </li>
-              </ul>
+              <div class="search_result_container">
+                <ul>
+                  <li v-for="(searched_show, index) in searched_anime" class="searched_results">
+                    <div class="card search_card">
+                      <h4 class="card-title search_result_card_title">${searched_show.title}</h4>
+                      <div class="search_card_inner">
+                        <img class="card-img-top search_result_image" v-bind:src="searched_show.image_url" alt="Card image">
+                        <div class="card-body search_result_card_body">
+              
+                          <div class="card-body search_result_card_smaller_body">
+                          <p>Type: ${searched_show.type}</p>
+                          <p>Community Rating: ${searched_show.score}</p>
+                          <p>Number of Episodes: ${searched_show.episodes}</p>
+                          </div>
+                          <button v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)">
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+
+
+                <!-- <ul>
+                  <li v-for="(searched_show, index) in searched_anime">
+                    <img v-bind:src = "searched_show.image_url">
+                    <div style="color: black">
+                        <p>Title: ${searched_show.title}</p>
+                        <p>Type: ${searched_show.type}</p>
+                        <p>Community Rating: ${searched_show.score}</p>
+                        <p>Number of Episodes: ${searched_show.episodes}</p>
+                    </div>
+                    <button v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)">
+                      <i class="fa fa-plus"></i>
+                    </button>
+                  </li>
+                </ul> -->
+              </div>
             </div>
             
           </div>
@@ -315,78 +342,118 @@
           <!-- Info Page for a specific Anime --------------------------------------------------------------------------------------------->
           <div class="specific_info_container" v-if="(current_page === 'infoPage')">
             <div class="info_container_2">
-              <img v-bind:src="specified_anime.image_url" id="specific_anime_image">
+              <div id="specific_anime_image_box"><img v-bind:src="specified_anime.image_url" id="specific_anime_image"></div>
               <div id="anime_status_ranking">
+                <div id="anime_status_ranking_box">
 
-                <div id="anime_status">
-                  <div class="info_box_title">Status</div>
-                  <div class="anime_status_elements container" style="margin-right: 0;">
+                  <div id="anime_status">
+                    <div class="info_box_title">Status</div>
+                    <div class="anime_status_elements container">
 
-                    <div class="third">
-                      <!--<label class="">Select Option</label>-->
-                      <div class="container">
-                        <label class="quarter" style="margin-top: 31px">List: <!-- ${specified_anime_user_info.list_status} --></label>
-                        <select class="fill" id="select_list_status" v-model="stat" name="stat">
-                          <option v-for=" stat in list_stats" :value="stat">${stat}</option>
-                          <!-- <option>Plan To Watch</option>
-                          <option>Watching</option>
-                          <option>On Hold</option>
-                          <option>Completed</option>
-                          <option>Dropped</option> -->
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="third">
-                      <div class="container">
-                        <label class="quarter center" style="margin-top: 31px">Rating: <!-- ${specified_anime_user_info.user_score} --></label>
-                        <select class="fill" id="select_rating" v-model="rating" name="rating">
-                          <option v-for="rating in ratings" :value="rating">${rating}</option>
-                          <!-- <option >(0) Unrated</option>
-                          <option>(1) Garbage</option>
-                          <option>(2) Horrible</option>
-                          <option>(3) Very Bad</option>
-                          <option>(4) Bad</option>
-                          <option>(5) Average</option>
-                          <option>(6) Ok</option>
-                          <option>(7) Good</option>
-                          <option>(8) Great</option>
-                          <option>(9) Amazing</option>
-                          <option>(10) Work Of Art</option> -->
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="third">
-                      <div class="container">
-                        <label class="quarter center" style="margin-top: 31px">
-                        Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
-                        <div class="center" style="margin-top: 0px">
-                          <input type="number" placeholder="0" v-model="ep_count" 
-                          step="1" min="0" max="100" class="fill" id="select_episode_count">
+                      <div class="third anime_status_elements_inside">
+                        <!--<label class="">Select Option</label>-->
+                        <div class="container anime_status_elements_inside_box">
+                          <label class="quarter center" style="margin-top: 31px">List: <!-- ${specified_anime_user_info.list_status} --></label>
+                          <select class="fill" id="select_list_status" v-model="stat" name="stat">
+                            <option v-for=" stat in list_stats" :value="stat">${stat}</option>
+                            <!-- <option>Plan To Watch</option>
+                            <option>Watching</option>
+                            <option>On Hold</option>
+                            <option>Completed</option>
+                            <option>Dropped</option> -->
+                          </select>
                         </div>
                       </div>
+
+                      <div class="third anime_status_elements_inside">
+                        <div class="container anime_status_elements_inside_box">
+                          <label class="quarter center" style="margin-top: 31px">Rating: <!-- ${specified_anime_user_info.user_score} --></label>
+                          <select class="fill" id="select_rating" v-model="rating" name="rating">
+                            <option v-for="rating in ratings" :value="rating">${rating}</option>
+                            <!-- <option >(0) Unrated</option>
+                            <option>(1) Garbage</option>
+                            <option>(2) Horrible</option>
+                            <option>(3) Very Bad</option>
+                            <option>(4) Bad</option>
+                            <option>(5) Average</option>
+                            <option>(6) Ok</option>
+                            <option>(7) Good</option>
+                            <option>(8) Great</option>
+                            <option>(9) Amazing</option>
+                            <option>(10) Work Of Art</option> -->
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="third anime_status_elements_inside">
+                        <div class="container anime_status_elements_inside_box">
+                          <label class="quarter center" style="margin-top: 31px">
+                          Episodes: ${specified_anime_user_info.episodes_watched}/${specified_anime_user_info.episode_number}</label>
+                          <div class="center" style="margin-top: 0px">
+                            <input type="number" placeholder="0" v-model="ep_count"
+                            step="1" min="0" max="100" class="fill" id="select_episode_count">
+                          </div>
+                        </div>
+                      </div>
+                      <div id="submit_button_container">
+                        <button v-if="submit_pressed === 'waiting'" v-on:click="update_stat_ep_rating(specified_anime.mal_id)" 
+                        id="submit_button">Submit Changes</button>
+                        <button v-if="submit_pressed === 'loading'" v-on:click="" 
+                        id="submit_button">Submit Changes <i class="fa fa-spinner"></i></button>
+                        <button v-if="submit_pressed === 'check'" v-on:click="" 
+                        id="submit_button">Submit Changes <i class="fa fa-check"></i></button>
+
+                      </div>
                     </div>
-                    <div> <button v-on:click="update_stat_ep_rating(specified_anime.mal_id)">Submit Changes</button></div>
-                  </div>
-                  
-                </div>
-
-                <div id="anime_ranking">
-                  <div class="info_box_title"> Community Ranking</div>
-                  <div class="container anime_ranking_elements">
                     
-                    <div class=" anime_ranking_elements_container third "><p>Score: ${specified_anime.score}</p></div>
-                    <div class=" anime_ranking_elements_container third "><p>Ranking: #${specified_anime.rank}</p></div>
-                    <div class=" anime_ranking_elements_container third "><p>Popularity: #${specified_anime.popularity}</p></div>
+                  </div>
 
+                  <div id="anime_ranking">
+                    <div class="info_box_title"> Community Ranking</div>
+                    <div class="container anime_ranking_elements">
+                      
+                      <div class=" anime_ranking_elements_container third "><p>Score: ${specified_anime.score}</p></div>
+                      <div class=" anime_ranking_elements_container third "><p>Ranking: #${specified_anime.rank}</p></div>
+                      <div class=" anime_ranking_elements_container third "><p>Popularity: #${specified_anime.popularity}</p></div>
+
+                    </div>
                   </div>
                 </div>
               </div>
 
             </div>
 
-            <div></div>
+            <div class="extra_info_container container">
+
+              <div class="quarter show_informaiton_left">
+                <div class="center padding show_informaiton_left_box">
+                  <div class="info_box_title">Information</div>
+                  <div class="show_informaiton_left_contents">
+                    <p>Type: ${specified_anime.type}</p>
+                    <p>Episodes: ${specified_anime.episodes}</p>
+                    <p>Status: ${specified_anime.status}</p>
+                    <p>Aired: ${specified_anime.aired_string}</p>
+                    <p>Premiered: ${specified_anime.premiered}</p>
+                    <p>Broadcast: ${specified_anime.broadcast}</p>
+                    <p>Source: ${specified_anime.source}</p>
+                    <p v-for="(studio, index) in specified_anime.studio">Studio ${index + 1}: ${studio.name}</p>
+                    <p>Rating: ${specified_anime.rating}</p>
+                    <p>Duration: ${specified_anime.duration}</p>
+                    <p>Genres:</p>
+                    <p v-for="genre in specified_anime.genre" style="line-height: 10px">${genre.name}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="threequarters show_information_right">
+                <div class="center padding show_information_right_box">
+                  <div class="info_box_title">Synopsis</div>
+                  <div class="show_informaiton_right_box_contents">
+                    <p>${specified_anime.synopsis}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
       {{pass}}

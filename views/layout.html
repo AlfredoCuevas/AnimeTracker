@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="{{=URL('static', 'font-awesome-4.6.3/css/font-awesome.min.css')}}">
     {{include "web2py_ajax.html"}}
   </head>
-  <body class="black">
+  <body class="body_style">
     {{if response.flash:}}
     <div class="w2p_flash">
       {{=response.flash}}
     </div>
     {{pass}}
-    <header class="black padded">
+    <header class=" padded" style="background-color: #2E51A2; color: white;">
       <div class="container middle max900">
         <div class="fill middle">
           <label class="ham padded fa fa-bars" for="menu"></label>
@@ -35,7 +35,7 @@
         </div>
       </div>
     </header>
-    <main class="" style="background-color: #E1E7F5;">
+    <main class="" style="background-color: #E1E7F5; color: black">
       {{include}}
     </main>
     <!--

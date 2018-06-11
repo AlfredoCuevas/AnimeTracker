@@ -1,3 +1,6 @@
+.body_style{
+    background-color: #E1E7F5;
+}
 #my_side_menu{
     background-color: #2E51A2;
     /* stupid.css change
@@ -111,38 +114,66 @@ button.info_button{
 
 /* Specific Info Page -----------------------------------------------*/
 div.specific_info_container{
+    padding-top: 30px;
     width: 100%;
-    background-color: yellow;
+    height: 100%;
+    background-color: #E1E7F5;
 }
 
 div.info_container_2{
-    background-color: orange;
+    background-color: #E1E7F5;
     margin: auto;
     width: 80%;
 }
 
-#specific_anime_image{
+#specific_anime_image_box{
     display: inline-block;
     margin-top: 30px;
+    width: 23.5%;
+    /*max-width: 300px;*/
+}
+#specific_anime_image{
+    display: block;
+    margin: auto;
+    /*width: 80%;*/
 }
 
 #anime_status_ranking{
     display: inline-block;
-    width: 60%;
+    width: 70%;
     vertical-align: top;
+    /*padding-right: 10px;*/
+    padding-left: 0px;
+
+}
+
+#anime_status_ranking_box{
+    /*background-color: red;*/
+    margin: auto;
+    width: 106%;
+    margin-top: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
 
 }
 
 #anime_status, #anime_ranking{
-    display: inline-block;
-    background-color: darkgrey;
+    /*display: inline-block;*/
+    background-color: #2C363F;
+    color: white;
     width: 100%;
     vertical-align: top;
     border-radius: 1px;
-    height: 130px;
+    margin-bottom: 20px;
+    padding-bottom: 20px
+    /*height: 130px;
     margin-left: 30px;
     margin-right: 30px;
-    margin-top: 30px;
+    margin-top: 30px;*/
+}
+
+div.anime_ranking_elements{
+    margin-right: 0px;
 }
 
 div.info_box_title{
@@ -153,10 +184,17 @@ div.info_box_title{
     font-size: 20;
     font-family: sans-serif;
     font-weight: bold;
+    color: white;
 }
 
 div.anime_status_elements{
-
+    margin-right: 0px;
+}
+div.anime_status_elements_inside{
+}
+div.anime_status_elements_inside_box{
+    padding-right: 20px;
+    padding-left: 20px;
 }
 
 #select_list_status, #select_rating, #select_episode_count{
@@ -174,13 +212,74 @@ div.anime_status_elements{
 }
 
 div.anime_ranking_elements_container{
-    height: 100%;
+    /*height: 100%;*/
 }
 div.anime_ranking_elements_container > p{
     padding-top: 40px;
     text-align: center;
     font-size: 18px;
     font-family: sans-serif;
+}
+
+div.extra_info_container{
+    background-color: transparent;
+    margin: auto;
+    width: 80%;
+    padding-top: 20px;
+}
+
+div.show_informaiton_left{
+    background-color: transparent;
+}
+
+div.show_informaiton_left_box{
+    background-color:  #E1E7F5;
+}
+
+div.show_informaiton_left_contents{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    color: white;
+    background-color: #2C363F;
+    min-height: 300px;
+}
+
+div.show_information_right{
+    background-color: transparent;
+}
+
+div.show_information_right_box{
+    background-color:  transparent;
+    width: 100%;
+}
+
+div.show_informaiton_right_box_contents{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+    background-color: #2C363F;
+    min-height: 300px;
+    line-height: 30px;
+}
+
+#submit_button_container{
+    padding-top: 20px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 20px;
+}
+#submit_button{
+    background-color: #008CBA;
+    color: white;
+    border-radius: 12px;
+}
+
+#submit_button:hover{
+    background-color: pink;
+    color: black;
 }
 
 
@@ -482,4 +581,87 @@ progress {
   .progress-bar {
     transition: none;
   }
+}
+
+
+/* Search Page --------------------------------------------------------------------------------------------------*/
+div.search_page{
+    width: 100%;
+    height: 100%;
+    background-color: #E1E7F5;
+
+}
+div.search_page_container{
+    width: 70%;
+    height: 100%;
+    margin:auto;
+}
+
+#search_input_box{
+    width: 90%;
+    height: 30px;
+    font-size: 1.0em;
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 8px;
+}
+button.search_submit_button{
+    width: 8%;
+    border-radius: 8px;
+    background-color: #008CBA;
+}
+
+button.search_submit_button:hover{
+    width: 8%;
+    border-radius: 8px;
+    background-color: pink;
+}
+
+li.searched_results{
+    display: inline-block;
+    margin-left:20px;
+    margin-right: 20px;
+    vertical-align: top;
+}
+div.search_card{
+    width:600px;
+    height: 300px;
+    background-color: #2C363F;
+    color: white;
+    display: inline-block;
+}
+
+div.search_card_middle{
+}
+
+div.search_card_inner{
+    /*display: inline-block;*/
+    width: 90%;
+    height: 100%;
+    margin: auto;
+    /*vertical-align: center;*/
+    padding-left: 40px;
+}
+
+img.search_result_image{
+    display: inline-block;
+    height: 140px;
+    width: 100px;
+}
+
+div.search_result_card_body{
+    display: inline-block;
+    padding-left: 5px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    vertical-align: center;
+}
+
+h4.search_result_card_title{
+    text-align: center;
+    width: 100%;
+}
+
+div.search_result_card_smaller_body{
+    padding-left: 0px;
 }

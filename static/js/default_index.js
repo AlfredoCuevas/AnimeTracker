@@ -50,7 +50,7 @@ var app = function() {
             setTimeout(function () {
                 // This will act like 'watching' tab was selected
                 document.getElementById("initial").click();
-            }, 1000);
+            }, 600);
 
         }else if(page === "search"){
             self.vue.current_page = page;
@@ -321,6 +321,9 @@ var app = function() {
 
     // This will allow the episode_count, rating, and list_status to be updated in the database
     self.update_stat_ep_rating = function(mal_id){
+        self.vue.submit_pressed = 'loading';
+        setTimeout(function(){ self.vue.submit_pressed = 'check';}, 1500);
+        setTimeout(function(){ self.vue.submit_pressed = 'waiting';},2000);
         let temp_page = 'planToWatch';
         if(self.vue.stat === "Plan To Watch")
             temp_page = 'planToWatch';
@@ -351,6 +354,10 @@ var app = function() {
 
     }
 
+    self.log_out = function(){
+        $.post(log_out_url);
+    };
+
     // Complete as needed.
     self.vue = new Vue({
         el: "#vue-div",
@@ -373,6 +380,7 @@ var app = function() {
             list_stats: ['Plan To Watch', 'Watching', 'On Hold', 'Completed', 'Dropped'],
             stat: 'Plan To Watch',
             ep_count: 0,
+            submit_pressed: 'waiting',
         },
         methods: {
             tab_clicked: self.tab_clicked,
@@ -383,6 +391,7 @@ var app = function() {
             add_favorites: self.add_favorites,
             remove_favorites: self.remove_favorites,
             info_button_clicked: self.info_button_clicked,
+            log_out: self.log_out,
             test_api: self.test_api,
             test_post_entry: self.test_post_entry,
             update_stat_ep_rating: self.update_stat_ep_rating,
