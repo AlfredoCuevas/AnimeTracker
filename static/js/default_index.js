@@ -60,6 +60,9 @@ var app = function() {
             self.vue.current_page = page;
             self.get_favorites_list();
 
+        }else if(page === "random"){
+            self.vue.current_page = page;
+            self.get_random_show();
         }else{
             self.vue.current_page = page;
         }
@@ -109,40 +112,40 @@ var app = function() {
     }
 
     // for testing
-    self.test_api = function(){
-        console.log("about to call the api");
-        // this will delete all entries in the user_show_list table
-        $.post(
-            //'https://api.jikan.moe/anime/20/episodes',
-            //'http://api.jikan.moe/search/anime/naruto',
-            test_url,
-            function(success){
-                console.log("returned from api call");
-                console.log(success);
-            }
-        );
-    };
+    // self.test_api = function(){
+    //     console.log("about to call the api");
+    //     // this will delete all entries in the user_show_list table
+    //     $.post(
+    //         //'https://api.jikan.moe/anime/20/episodes',
+    //         //'http://api.jikan.moe/search/anime/naruto',
+    //         test_url,
+    //         function(success){
+    //             console.log("returned from api call");
+    //             console.log(success);
+    //         }
+    //     );
+    // };
 
     // for testing: adds a specific entry of data 
-    self.test_post_entry = function(){
-        console.log("adding a test entry manually");
-        let data_obj = {
-            mal_id: 1,
-            title: "Cowboy Bebop",
-            episode_number: 26,
-            image_url: "https://myanimelist.cdn-dena.com/images/anime/4/19644.jpg",
-            community_score: 8.81,
-            list_status: "planToWatch"
-        };
-        $.post(
-            test_post_entry_url,
-            data_obj,
-            function(success){
-                console.log("added the test anime");
-                console.log(success);
-            }
-        )
-    };
+    // self.test_post_entry = function(){
+    //     console.log("adding a test entry manually");
+    //     let data_obj = {
+    //         mal_id: 1,
+    //         title: "Cowboy Bebop",
+    //         episode_number: 26,
+    //         image_url: "https://myanimelist.cdn-dena.com/images/anime/4/19644.jpg",
+    //         community_score: 8.81,
+    //         list_status: "planToWatch"
+    //     };
+    //     $.post(
+    //         test_post_entry_url,
+    //         data_obj,
+    //         function(success){
+    //             console.log("added the test anime");
+    //             console.log(success);
+    //         }
+    //     )
+    // };
 
     /**
      * gets the list of shows for the given list_category
@@ -159,18 +162,48 @@ var app = function() {
             function(list){
                 if(list_category === "watching") {
                     self.vue.watching = list.show_list;
+
+                    if(self.vue.watching.length === 0)
+                        self.vue.no_shows = true;
+                    else
+                        self.vue.no_shows = false;
+
                     console.log(self.vue.watching);
                 }else if(list_category === "planToWatch") {
                     self.vue.planToWatch = list.show_list;
+
+                    if(self.vue.planToWatch.length === 0)
+                        self.vue.no_shows = true;
+                    else
+                        self.vue.no_shows = false;
+
                     console.log(self.vue.planToWatch);
                 }else if(list_category === "onHold") {
                     self.vue.onHold = list.show_list;
+
+                    if(self.vue.onHold.length === 0)
+                        self.vue.no_shows = true;
+                    else
+                        self.vue.no_shows = false;
+
                     console.log(self.vue.onHold);
                 }else if(list_category === "completed") {
                     self.vue.completed = list.show_list;
+
+                    if(self.vue.completed.length === 0)
+                        self.vue.no_shows = true;
+                    else
+                        self.vue.no_shows = false;
+
                     console.log(self.vue.completed);
                 }else if(list_category === "dropped") {
                     self.vue.dropped = list.show_list;
+
+                    if(self.vue.dropped.length === 0)
+                        self.vue.no_shows = true;
+                    else
+                        self.vue.no_shows = false;
+
                     console.log(self.vue.dropped);
                 }else {
                     console.error(list_category + "is not a correct list name");
@@ -194,6 +227,9 @@ var app = function() {
                 data_obj,
                 function(list){
                     self.vue.searched_anime = list.search.result;
+                    for(let i = 0; i < self.vue.searched_anime.length; i++){
+                        self.vue.searched_anime[i].added_to_lists = false;
+                    }
                     //console.log(self.vue.searched_anime);
                 }
             );
@@ -219,9 +255,14 @@ var app = function() {
             function(success){
                 console.log("Anime you want to Add");
                 console.log(success.anime);
+
+                let temp = self.vue.searched_anime[index];
+                temp.added_to_lists = true;
+                Vue.set(self.vue.searched_anime, index, temp);
             });
     };
 
+    // makes an animes favorites variable = true
     self.add_favorites = function(id, mal_id, index, current_page){
         let data_obj = {
             id: id,
@@ -264,6 +305,7 @@ var app = function() {
             });
     };
 
+    // makes an anime's favorite variable = false
     self.remove_favorites = function(id, mal_id, index, current_page){
         let data_obj = {
             id: id,
@@ -319,6 +361,24 @@ var app = function() {
         );
     }
 
+    // Gets a random show for the user to watch
+    self.get_random_show = function(){
+        console.log("getting Random Show");
+        $.get(
+            get_random_show_url,
+            function(show_mal_id){
+                console.log(show_mal_id);
+                if(show_mal_id != -1){
+                    self.info_button_clicked(show_mal_id);
+                    // you can add a variable here to toggle a message for empty anime lists
+                }
+                // These logs are from when get_random_show returned a list
+                // console.log("retrieved random show");
+                // console.log(show.random_show_user_info);
+                // console.log(show.random_show_full_info)
+            });
+    }
+
     // This will allow the episode_count, rating, and list_status to be updated in the database
     self.update_stat_ep_rating = function(mal_id){
         self.vue.submit_pressed = 'loading';
@@ -354,8 +414,12 @@ var app = function() {
 
     }
 
+    // was originally going to log out the user but I had to find a work around
+    // because this didn't redirect the user after they were logged out
     self.log_out = function(){
-        $.post(log_out_url);
+        // This wasn't working, this doesn't redirect after being called
+        // $.post(log_out_url);
+        // console.log(log_out_url);
     };
 
     // Complete as needed.
@@ -381,6 +445,7 @@ var app = function() {
             stat: 'Plan To Watch',
             ep_count: 0,
             submit_pressed: 'waiting',
+            no_shows: true,
         },
         methods: {
             tab_clicked: self.tab_clicked,
@@ -392,8 +457,8 @@ var app = function() {
             remove_favorites: self.remove_favorites,
             info_button_clicked: self.info_button_clicked,
             log_out: self.log_out,
-            test_api: self.test_api,
-            test_post_entry: self.test_post_entry,
+            //test_api: self.test_api,
+            //test_post_entry: self.test_post_entry,
             update_stat_ep_rating: self.update_stat_ep_rating,
         }
 

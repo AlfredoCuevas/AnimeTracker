@@ -16,7 +16,9 @@
             var get_favorites_list_url = "{{=URL('api', 'get_favorites_list')}}";
             var get_anime_info_url = "{{=URL('api', 'get_anime_info')}}";
             var update_users_stats_url = "{{=URL('api', 'update_users_stats')}}";
-            var log_out_url = "{{=URL('default', 'user', args='logout')}}"; // Need to fix the redirect
+            var get_random_show_url = "{{=URL('api', 'get_random_show')}}";
+            var log_out_url = "{{ =URL('default', 'user', args='logout') }}";
+            //var go_to_index = "{{=URL('default', 'index')}}";
             console.log(log_out_url);
             var user_logged_in = false;
         </script>
@@ -33,8 +35,9 @@
 
           <!-- Defines the sidebar that allows the user to navigate the space -->
           <div class="sidebar" id="my_side_menu">
-              <button class="rounded center" id="user_icon">
-                  <i class="fa fa-user fa-5x"></i>
+              <button class="rounded center" id="user_icon" v-on:click="menu_button_clicked('home')">
+                  <img src="../static/images/logo.png" style="width: 100px;">
+                  <!-- <i class="fa fa-user fa-5x"></i> -->
               </button>
 
               <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('home')">
@@ -52,8 +55,9 @@
               <button class="rounded center side_bar_buttons_g1" v-on:click="menu_button_clicked('random')">
                   <i class="fa fa-question-circle fa-2x"></i>
               </button>
-              <button class="rounded center" id="sign_out" v-on:click="log_out">
-                  <i class="fa fa-sign-out fa-2x"></i>
+              <button class="rounded center" id="sign_out" v-on:click='log_out'>
+                  <!-- <i class="fa fa-sign-out fa-2x"></i> -->
+                  {{=A('',XML('<i class="fa fa-sign-out fa-2x" style="color: white"></i>'), _href=URL('default', 'user', args='logout'))}}
               </button>
           </div>
 
@@ -70,6 +74,17 @@
           <!-- Defines the container used when displaying lists of shows ---------------------------------------------------------- -->
           <div class="shows_container container" style="background-color: #E1E7F5; padding-top: 20px; padding-left: 100px;"
           v-if="(current_page === 'watching') || (current_page === 'planToWatch') || (current_page === 'completed') || (current_page === 'onHold') || (current_page === 'dropped') || (current_page === 'home')">
+
+              <div v-if="no_shows" class="Welcome">
+                <div class="Welcome_title"><h2>Welcome to Anime Tracker</h2></div>
+                <div class="Welcome_paragraph">
+                  <ul>
+                    <li>It seems you don't have any anime on this list.<li>
+                    <li>To begin adding anime, hover over the menu bar on the leftside of the screen.You can search for new anime using the search tool.</li>
+                    <li>From there you can add anime and they will instantly appear in your <i>Planned-To-Watch</i> List.</li>
+                  </ul>
+                </div>
+              </div>
               <!-- planToWatch List of shows -->
               <ul v-if="current_page === 'planToWatch'">
                 <li v-for="(show, index) in planToWatch" style="display: inline-block; margin-left:20px; margin-right: 20px; vertical-align: top;">
@@ -269,8 +284,12 @@
                           <p>Community Rating: ${searched_show.score}</p>
                           <p>Number of Episodes: ${searched_show.episodes}</p>
                           </div>
-                          <button v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)">
+                          <button v-if="searched_show.added_to_lists === false" 
+                          v-on:click="add_selected_to_planToWatch(searched_show.mal_id, index)" class="search_add_buttons">
                             <i class="fa fa-plus"></i>
+                          </button>
+                          <button v-if="searched_show.added_to_lists === true" v-on:click="" class="search_add_buttons_checked">
+                            <i class="fa fa-check"></i>
                           </button>
                         </div>
                       </div>
@@ -300,6 +319,8 @@
 
           <!-- Favorites Page: Displays all the anime that the user has labeled as favorite ----------------------------------------------->
           <div class="shows_container" style="background-color: #E1E7F5; padding-top: 20px; padding-left: 100px;" v-if="(current_page === 'favorites')">
+
+            <div class="favorites_title_container"><h2>Favorites</h2></div>
 
             <!-- Make sure that all functions work with favorites -->
               <ul v-if="current_page === 'favorites'">
@@ -339,8 +360,20 @@
 
           </div>
 
+          <!-- Random Anime Page ------------------------------------------------------------------------>
+          <div class="shows_container" style="background-color: #E1E7F5; padding-top: 20px; padding-left: 100px;" 
+          v-if="(current_page === 'random')">
+
+          <!-- This will immediately switch to the info page -->
+
+          </div>
+
+
           <!-- Info Page for a specific Anime --------------------------------------------------------------------------------------------->
           <div class="specific_info_container" v-if="(current_page === 'infoPage')">
+
+            <div class="favorites_title_container"><h2>${specified_anime.title}</h2></div>
+
             <div class="info_container_2">
               <div id="specific_anime_image_box"><img v-bind:src="specified_anime.image_url" id="specific_anime_image"></div>
               <div id="anime_status_ranking">
@@ -456,6 +489,20 @@
             </div>
           </div>
 
+
+      {{else:}}
+
+      <div class="Welcome">
+        <div class="Welcome_image"><img src="../static/images/AnimeTracker-logo-blue.png"></div>
+        <div class="Welcome_title"><h2>Welcome to Anime Tracker</h2></div>
+        <div class="Welcome_paragraph">
+          <ul>
+            <li>Here you will be able to organize your list of anime.<li>
+            <li>To begin tracking your anime please log-in</li>
+            <li>Once logged in you can search for anime and add them to your <i>Planned-To-Watch</i> List.</li>
+          </ul>
+        </div>
+      </div>
       {{pass}}
   </div>
 

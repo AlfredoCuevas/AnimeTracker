@@ -4,6 +4,7 @@ import json
 from jikanpy import Jikan
 jikan = Jikan()
 
+@auth.requires_login()
 def testing():
     #naruto = jikan.anime(20)
     # search = jikan.search('anime', 'naruto')
@@ -11,7 +12,7 @@ def testing():
     db.user_show_list.truncate()
     return "all entries deleted"
 
-
+@auth.requires_login()
 def test_post_entry():
     mal_id = request.vars.mal_id
     title = request.vars.title
@@ -24,6 +25,7 @@ def test_post_entry():
     return (title + " added to the " + list_status + " list, test_entry")
 
 
+@auth.requires_login()
 def get_watch_list():
     list_category = request.vars.list_category
     q = ((db.user_show_list.user_id == auth.user.id) & (db.user_show_list.list_status == list_category))
@@ -32,6 +34,7 @@ def get_watch_list():
     return response.json(dict(show_list=show_list))
 
 
+@auth.requires_login()
 def search_for_anime():
     search_word = request.vars.search_term
     search = jikan.search('anime', search_word)
@@ -39,6 +42,7 @@ def search_for_anime():
     return response.json(dict(search=search))
 
 
+@auth.requires_login()
 def add_selected_to_planToWatch():
     mal_id = request.vars.mal_id
 
@@ -73,6 +77,8 @@ def add_selected_to_planToWatch():
 
     return response.json(dict(anime=anime))
 
+
+@auth.requires_login()
 def add_favorites():
     db_id = request.vars.id
     mal_id = request.vars.mal_id
@@ -86,6 +92,7 @@ def add_favorites():
     return "show updated: favorite=True"
 
 
+@auth.requires_login()
 def remove_favorites():
     db_id = request.vars.id
     mal_id = request.vars.mal_id
@@ -99,6 +106,7 @@ def remove_favorites():
     return "show updated: favorite=False"
 
 
+@auth.requires_login()
 def get_favorites_list():
     q = ((db.user_show_list.user_id == auth.user.id) & (db.user_show_list.favorite == True))
     show_list = db(q).select()
@@ -106,6 +114,7 @@ def get_favorites_list():
     return response.json(dict(show_list=show_list))
 
 
+@auth.requires_login()
 def get_anime_info():
     mal_id = request.vars.mal_id
     anime_info = jikan.anime(mal_id)
@@ -116,6 +125,7 @@ def get_anime_info():
     return response.json(dict(anime_info=anime_info, user_anime_info=user_anime_info))
 
 
+@auth.requires_login()
 def update_users_stats():
     mal_id = request.vars.mal_id
     episodes = request.vars.episodes_watched
@@ -129,3 +139,21 @@ def update_users_stats():
     user_anime_info = db(q).select().first()
 
     return response.json(dict(user_anime_info=user_anime_info))
+
+
+@auth.requires_login()
+def get_random_show():
+    q = ((db.user_show_list.user_id == auth.user.id) & (db.user_show_list.list_status == 'planToWatch'))
+    show = db(q).select(orderby='<random>')
+
+    if len(show) > 0:
+        #logger.info(show);
+        random_show = show.first()
+        # logger.info(random_show)
+        # logger.info(random_show.mal_id)
+        # anime_info = jikan.anime(random_show.mal_id)
+        # return response.json(dict(random_show_user_info=random_show, random_show_full_info=anime_info))
+        return random_show.mal_id
+    else: 
+        nothing_found = -1
+        return nothing_found

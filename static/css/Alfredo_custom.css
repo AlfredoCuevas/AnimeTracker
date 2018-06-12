@@ -3,11 +3,15 @@
 }
 #my_side_menu{
     background-color: #2E51A2;
+    margin-left:-130px;
     /* stupid.css change
     width:150px;
-    margin-left:-140px;
     */
 }
+#my_side_menu:hover{
+    margin: 0;
+}
+
 #user_icon{
     background-color: transparent;
     color: white;
@@ -611,6 +615,19 @@ button.search_submit_button{
     background-color: #008CBA;
 }
 
+button.search_add_buttons{
+    border-radius: 3px;
+    background-color: #008CBA;
+}
+button.search_add_buttons:hover{
+    background-color: red;
+    color: black;
+}
+button.search_add_buttons_checked{
+    background-color: green;
+    color: black;
+}
+
 button.search_submit_button:hover{
     width: 8%;
     border-radius: 8px;
@@ -665,4 +682,48 @@ h4.search_result_card_title{
 
 div.search_result_card_smaller_body{
     padding-left: 0px;
+}
+
+/**Favorites styles----------------------------------------------------*/
+div.favorites_title_container{
+    padding: 0px;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+}
+div.favorites_title_container > h2{
+    font-family: Arial, Helvetica, sans-serif;
+    color: #2E51A2;
+    /*text-shadow: -1px 0 #2E51A2, 0 1px #2E51A2, 1px 0 #2E51A2, 0 -1px #2E51A2;*/
+}
+
+
+/** Welcome Paragraph -----------------------------------------------*/
+div.Welcome{
+    width: 80%;
+    margin: auto;
+}
+div.Welcome_image{
+    width: 80%;
+    margin: auto;
+}
+div.Welcome_image > img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+}
+div.Welcome_title{
+    font-family: Arial, Helvetica, sans-serif;
+    color:  #2E51A2;
+    /*text-shadow: -1px 0 #2C363F, 0 1px #2C363F, 1px 0 #2C363F, 0 -1px #2C363F;*/
+    text-align: center;
+
+}
+div.Welcome_paragraph{
+    width: 600px;
+    margin: auto;
+    text-align: center;
+    font-size: 1.3em;
+    font-family: serif;
 }
